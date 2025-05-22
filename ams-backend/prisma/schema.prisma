@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de roles (Admin, Profesor, Acudiente, Estudiante)
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+// Usuario (general)
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  firstName       String
+  lastName        String
+  roleId          Int
+  role            Role      @relation(fields: [roleId], references: [id])
+
+  birthDate       DateTime?
+  address         String?
+  city            String?
+  phone           String?
+  gender          String?
+
+  matricula       Matricula?
+  staffProfile    StaffProfile?
+
+  // Relación de estudiante a acudiente (uno a uno)
+  acudienteId     Int?
+  acudiente       User?     @relation("Acudiente", fields: [acudienteId], references: [id])
+  estudiantes     User[]    @relation("Acudiente")
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Info de matrícula y datos de estudiante
+model Matricula {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          Int      @unique
+  fechaMatricula  DateTime
+  tipoMatricula   String?   
+  nivel           String?   
+  gradoNumero     Int?
+  gradoLetra      String?
+  tipoIdentificacion String?
+  numeroIdentidad String?
+  lugarExpedicion String?
+  fechaExpedicion DateTime?
+  lugarNacimiento String?
+  fechaNacimiento DateTime?
+  repitente       Boolean?
+  colegioAnterior String?
+  religion        String?
+  eps             String?
+  seguroEstudiantil Boolean?
+  alergia         Boolean?
+  alergias        String?
+  enfermedad      Boolean?
+  enfermedades    String?
+  discapacidad    Boolean?
+  discapacidades  String?
+  condicionEspecial Boolean?
+  condiciones     String?
+  poblacion       String?
+  padreApellido   String?
+  padreNombre     String?
+  padreTipoId     String?
+  padreNumeroId   String?
+  padreOcupacion  String?
+  padreDireccion  String?
+  padreCiudad     String?
+  padreTelefono   String?
+  padreEstado     String?
+  madreApellido   String?
+  madreNombre     String?
+  madreTipoId     String?
+  madreNumeroId   String?
+  madreOcupacion  String?
+  madreDireccion  String?
+  madreCiudad     String?
+  madreTelefono   String?
+  madreEstado     String?
+}
+
+// Perfil para profes/coordinadores/administrativos
+model StaffProfile {
+  id                 Int    @id @default(autoincrement())
+  user               User   @relation(fields: [userId], references: [id])
+  userId             Int    @unique
+  tipoPersonal       String 
+  nivel              String? 
+  areas              String? 
+  direccionGrupo     String? 
+  escalafon          Boolean?
+  nivelEscalafon     String? 
+}
