@@ -1,4 +1,6 @@
+# Ignorar dependencias del backend
 node_modules/
-dist/
 .env
-*.log
+dist/
+# Ignorar archivos de base de datos de desarrollo
+prisma/dev.db

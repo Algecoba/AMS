@@ -18,7 +18,7 @@ export const registerUser = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'El usuario ya existe' });
         }
 
-        const role = await prisma.role.findUnique({ where: { name: roleName } });
+        const role = await prisma.role.findUnique({ where: { name: roleName.toUpperCase() } });
         if (!role) {
             return res.status(400).json({ error: 'Rol no válido' });
         }
