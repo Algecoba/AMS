@@ -1,14 +1,6 @@
 import React from "react";
+import LoginForm from "../components/LoginForm";
 
-const Login: React.FC = () => (
-    <div>
-        <h2>Iniciar sesión</h2>
-        <form>
-            <input type="text" placeholder="Usuario" /><br />
-            <input type="password" placeholder="Contraseña" /><br />
-            <button type="submit">Entrar</button>
-        </form>
-    </div>
-);
+const Login: React.FC = () => <LoginForm />;
 
 export default Login;
